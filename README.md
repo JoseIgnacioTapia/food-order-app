@@ -1,4 +1,7 @@
-# Getting Started with Create React App
+# Meal ordering app with React basics and advanced features
+================================================================
+
+Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
