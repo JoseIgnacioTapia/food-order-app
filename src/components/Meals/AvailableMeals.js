@@ -31,6 +31,7 @@ const DUMMY_MEALS = [
 
 const mealList = DUMMY_MEALS.map(meal => (
   <MealItem
+    id={meal.id} // Fixing label problem
     key={meal.id}
     name={meal.name}
     description={meal.description}
