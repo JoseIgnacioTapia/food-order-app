@@ -9,9 +9,9 @@ export function cartContextReducer(state, action) {
   switch (action.type) {
     case TYPES.ADD_ITEM:
       // console.log(action.payload);
-      const updatedItems = state.items.concat(action.item);
+      const updatedItems = state.items.concat(action.payload);
       const updatedTotalAmount =
-        state.totalAmount + action.item.price * action.item.amount;
+        state.totalAmount + action.payload.price * action.payload.amount;
       return {
         items: updatedItems,
         totalAmount: updatedTotalAmount,
