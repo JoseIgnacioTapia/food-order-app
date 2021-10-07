@@ -7,7 +7,7 @@ export const defaultCartState = {
 
 export function cartContextReducer(state, action) {
   switch (action.type) {
-    case TYPES.ADD_ITEM:
+    case TYPES.ADD_ITEM: {
       // console.log(action.payload);
       const updatedTotalAmount =
         state.totalAmount + action.payload.price * action.payload.amount;
@@ -34,6 +34,31 @@ export function cartContextReducer(state, action) {
         items: updatedItems,
         totalAmount: updatedTotalAmount,
       };
+    }
+
+    case TYPES.DELETE_ITEM: {
+      const existingCartItemIndex = state.items.findIndex(
+        item => item.id === action.payload
+      );
+      const existingItem = state.items[existingCartItemIndex];
+      const updatedTotalAmount = state.totalAmount - existingItem.price;
+      let updatedItems;
+      if (existingItem.amount === 1) {
+        updatedItems = state.items.filter(item => item.id !== action.payload);
+      } else {
+        const updatedItem = {
+          ...existingItem,
+          amount: existingItem.amount - 1,
+        };
+        updatedItems = [...state.items];
+        updatedItems[existingCartItemIndex] = updatedItem;
+      }
+
+      return {
+        items: updatedItems,
+        totalAmount: updatedTotalAmount,
+      };
+    }
 
     default:
       return state;
