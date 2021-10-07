@@ -9,6 +9,7 @@ const MealItemForm = props => {
   const submitHandler = e => {
     e.preventDefault();
 
+    // Getting the value input from Input Component ith useRef
     const enteredAmount = amountInputRef.current.value;
     // Convert string to number
     const enteredAmountNumber = +enteredAmount;
@@ -16,7 +17,7 @@ const MealItemForm = props => {
     if (
       enteredAmount.trim().length === 0 ||
       enteredAmountNumber > 5 ||
-      enteredAmountNumber < 0
+      enteredAmountNumber < 1
     ) {
       setAmountIsValid(false);
       return;

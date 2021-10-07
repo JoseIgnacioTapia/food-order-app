@@ -6,6 +6,7 @@ import { CartContext } from '../../context/CartContext';
 const HeaderCardButton = props => {
   const cartCtx = useContext(CartContext);
 
+  // Stores the number of items per item type:
   const numberOfCartItems = cartCtx.items.reduce((curNumber, item) => {
     return curNumber + item.amount;
   }, 0);
