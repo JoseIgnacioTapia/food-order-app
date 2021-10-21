@@ -60,6 +60,10 @@ export function cartContextReducer(state, action) {
       };
     }
 
+    case TYPES.CLEAR: {
+      return defaultCartState;
+    }
+
     default:
       return state;
   }
