@@ -20,6 +20,19 @@ const Cart = props => {
     cartCtx.addItem({ ...item, amount: 1 }); // Adding the Item per 1 of click
   };
 
+  const submitOrderHandler = userData => {
+    fetch(
+      'https://food-order-app-96653-default-rtdb.firebaseio.com/orders.json',
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          user: userData,
+          orderItems: cartCtx.items,
+        }),
+      }
+    );
+  };
+
   const cartItems = (
     <ul className={classes['cart-items']}>
       {cartCtx.items.map(item => (
@@ -59,7 +72,9 @@ const Cart = props => {
         <span>Total Amount</span>
         <span>{totalAmount}</span>
       </div>
-      {checkout && <Checkout onCancel={props.onClose} />}
+      {checkout && (
+        <Checkout onConfirm={submitOrderHandler} onCancel={props.onClose} />
+      )}
       {!checkout && modalActions}
     </Modal>
   );
