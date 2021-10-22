@@ -54,6 +54,10 @@
   background-color: #7a2706;
 }
 
+.error-text {
+  color: #ca3e51;
+}
+
 .invalid label {
   color: #ca3e51;
 }
