@@ -44,3 +44,10 @@
   background-color: #8a2b06;
   color: white;
 }
+
+.error-text {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  color: rgb(218, 15, 15);
+}

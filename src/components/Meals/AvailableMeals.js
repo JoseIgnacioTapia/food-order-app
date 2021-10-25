@@ -18,7 +18,7 @@ const AvailableMeals = () => {
   if (mealsCntx.httpError) {
     return (
       <section>
-        <p className={classes['error-text']}>{mealsCntx.httpError}</p>
+        <p className={classes['error-text']}>{mealsCntx.httpError} 😒</p>
       </section>
     );
   }

@@ -12,8 +12,7 @@ const OrdersProvider = ({ children }) => {
 
   let urlGET =
     'https://food-order-app-96653-default-rtdb.firebaseio.com/meals.json';
-  let urlADD =
-    'https://food-order-app-96653-default-rtdb.firebaseio.com/orders.json';
+  let urlADD = 'https://food-order-app-96653-default-rtdb.firebaseio.com/';
 
   useEffect(() => {
     const fetchMeals = async () => {
@@ -82,6 +81,8 @@ const OrdersProvider = ({ children }) => {
         httpError,
         isSubmitting,
         didSubmit,
+        setIsSubmitting,
+        setDidSubmit,
         createOrder,
       }}
     >

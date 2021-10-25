@@ -27,17 +27,6 @@ const Cart = props => {
   const submitOrderHandler = async userData => {
     await ordersCntx.createOrder(userData, cartCtx.items);
 
-    // await fetch(
-    //   'https://food-order-app-96653-default-rtdb.firebaseio.com/orders.json',
-    //   {
-    //     method: 'POST',
-    //     body: JSON.stringify({
-    //       user: userData,
-    //       orderItems: cartCtx.items,
-    //     }),
-    //   }
-    // );
-
     cartCtx.clearCart();
   };
 
@@ -90,11 +79,17 @@ const Cart = props => {
 
   const isSubmittingModalContent = <p>Sending order data...</p>;
 
+  const didSubmitModalHandler = () => {
+    props.onClose();
+    ordersCntx.setDidSubmit(false);
+    ordersCntx.setIsSubmitting(false);
+  };
+
   const didSubmitModalContent = (
     <Fragment>
       <p>Successfully sent the order!</p>
       <div className={classes.actions}>
-        <button className={classes.button} onClick={props.onClose}>
+        <button className={classes.button} onClick={didSubmitModalHandler}>
           Close
         </button>
       </div>
@@ -104,10 +99,15 @@ const Cart = props => {
   return (
     <Modal onClose={props.onClose}>
       {!ordersCntx.isSubmitting && !ordersCntx.didSubmit && cartModalContent}
-      {ordersCntx.isSubmitting && isSubmittingModalContent}
+      {ordersCntx.isSubmitting &&
+        !ordersCntx.httpError &&
+        isSubmittingModalContent}
       {!ordersCntx.isSubmitting &&
         ordersCntx.didSubmit &&
         didSubmitModalContent}
+      {ordersCntx.httpError && (
+        <p className={classes['error-text']}>{ordersCntx.httpError} 😒</p>
+      )}
     </Modal>
   );
 };
