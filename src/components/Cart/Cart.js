@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 import { useState, useContext } from 'react';
 import { CartContext } from '../../context/CartContext';
+import { OrdersContext } from '../../context/OrdersContext';
 import Modal from '../UI/Modal';
 import classes from './Cart.module.css';
 import CartItem from './CartItem';
@@ -8,9 +9,9 @@ import Checkout from './Checkout';
 
 const Cart = props => {
   const cartCtx = useContext(CartContext);
+  const ordersCntx = useContext(OrdersContext);
+
   const [checkout, setCheckout] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [didSubmit, setDidSubmit] = useState(false);
 
   const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`;
   const hasItems = cartCtx.items.length > 0;
@@ -24,21 +25,19 @@ const Cart = props => {
   };
 
   const submitOrderHandler = async userData => {
-    setIsSubmitting(true);
+    await ordersCntx.createOrder(userData, cartCtx.items);
 
-    await fetch(
-      'https://food-order-app-96653-default-rtdb.firebaseio.com/orders.json',
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          user: userData,
-          orderItems: cartCtx.items,
-        }),
-      }
-    );
+    // await fetch(
+    //   'https://food-order-app-96653-default-rtdb.firebaseio.com/orders.json',
+    //   {
+    //     method: 'POST',
+    //     body: JSON.stringify({
+    //       user: userData,
+    //       orderItems: cartCtx.items,
+    //     }),
+    //   }
+    // );
 
-    setIsSubmitting(false);
-    setDidSubmit(true);
     cartCtx.clearCart();
   };
 
@@ -104,9 +103,11 @@ const Cart = props => {
 
   return (
     <Modal onClose={props.onClose}>
-      {!isSubmitting && !didSubmit && cartModalContent}
-      {isSubmitting && isSubmittingModalContent}
-      {!isSubmitting && didSubmit && didSubmitModalContent}
+      {!ordersCntx.isSubmitting && !ordersCntx.didSubmit && cartModalContent}
+      {ordersCntx.isSubmitting && isSubmittingModalContent}
+      {!ordersCntx.isSubmitting &&
+        ordersCntx.didSubmit &&
+        didSubmitModalContent}
     </Modal>
   );
 };
