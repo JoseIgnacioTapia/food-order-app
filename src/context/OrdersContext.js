@@ -10,12 +10,14 @@ const OrdersProvider = ({ children }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [didSubmit, setDidSubmit] = useState(false);
 
-  let url =
+  let urlGET =
     'https://food-order-app-96653-default-rtdb.firebaseio.com/meals.json';
+  let urlADD =
+    'https://food-order-app-96653-default-rtdb.firebaseio.com/orders.json';
 
   useEffect(() => {
     const fetchMeals = async () => {
-      const response = await fetch(url);
+      const response = await fetch(urlGET);
 
       if (!response.ok) {
         throw new Error('Something went wrong!');
@@ -36,20 +38,19 @@ const OrdersProvider = ({ children }) => {
 
       setMeals(loadedMeals);
       setIsLoading(false);
-      console.log(meals);
     };
 
     fetchMeals().catch(error => {
       setIsLoading(false);
       setHttpError(error.message);
     });
-  }, [url]);
+  }, [urlGET]);
 
   const createOrder = async (userData, orderItems) => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(url, {
+      const response = await fetch(urlADD, {
         method: 'POST',
         body: JSON.stringify({
           user: userData,
