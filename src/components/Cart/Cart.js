@@ -6,6 +6,7 @@ import Modal from '../UI/Modal';
 import classes from './Cart.module.css';
 import CartItem from './CartItem';
 import Checkout from './Checkout';
+import Message from './Message';
 
 const Cart = props => {
   const cartCtx = useContext(CartContext);
@@ -26,17 +27,6 @@ const Cart = props => {
 
   const submitOrderHandler = async userData => {
     await ordersCntx.createOrder(userData, cartCtx.items);
-
-    // await fetch(
-    //   'https://food-order-app-96653-default-rtdb.firebaseio.com/orders.json',
-    //   {
-    //     method: 'POST',
-    //     body: JSON.stringify({
-    //       user: userData,
-    //       orderItems: cartCtx.items,
-    //     }),
-    //   }
-    // );
 
     cartCtx.clearCart();
   };
@@ -90,24 +80,32 @@ const Cart = props => {
 
   const isSubmittingModalContent = <p>Sending order data...</p>;
 
-  const didSubmitModalContent = (
-    <Fragment>
-      <p>Successfully sent the order!</p>
-      <div className={classes.actions}>
-        <button className={classes.button} onClick={props.onClose}>
-          Close
-        </button>
-      </div>
-    </Fragment>
-  );
+  const didSubmitModalHandler = () => {
+    props.onClose();
+    ordersCntx.setDidSubmit(false);
+    ordersCntx.setIsSubmitting(false);
+    ordersCntx.setHttpError(null);
+  };
 
   return (
     <Modal onClose={props.onClose}>
       {!ordersCntx.isSubmitting && !ordersCntx.didSubmit && cartModalContent}
-      {ordersCntx.isSubmitting && isSubmittingModalContent}
-      {!ordersCntx.isSubmitting &&
-        ordersCntx.didSubmit &&
-        didSubmitModalContent}
+      {ordersCntx.isSubmitting &&
+        !ordersCntx.httpError &&
+        isSubmittingModalContent}
+      {!ordersCntx.isSubmitting && ordersCntx.didSubmit && (
+        <Message
+          message="Order sended sucesfully! 😀"
+          onCloseMessage={didSubmitModalHandler}
+        />
+      )}
+      {ordersCntx.httpError && (
+        <Message
+          message="Something went wrong 😒"
+          onCloseMessage={didSubmitModalHandler}
+          btnMsg={ordersCntx.httpError}
+        />
+      )}
     </Modal>
   );
 };

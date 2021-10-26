@@ -82,7 +82,10 @@ const OrdersProvider = ({ children }) => {
         httpError,
         isSubmitting,
         didSubmit,
+        setIsSubmitting,
+        setDidSubmit,
         createOrder,
+        setHttpError,
       }}
     >
       {children}
