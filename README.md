@@ -10,10 +10,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 
 # Install dependencies
-`npm install`
+## `npm install`
 
 # Prod server
-`npm start`
+## `npm start`
 
 # Build for production
-`npm run build`
+## `npm run build`
