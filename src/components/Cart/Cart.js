@@ -6,6 +6,7 @@ import Modal from '../UI/Modal';
 import classes from './Cart.module.css';
 import CartItem from './CartItem';
 import Checkout from './Checkout';
+import Message from './Message';
 
 const Cart = props => {
   const cartCtx = useContext(CartContext);
@@ -83,18 +84,8 @@ const Cart = props => {
     props.onClose();
     ordersCntx.setDidSubmit(false);
     ordersCntx.setIsSubmitting(false);
+    ordersCntx.setHttpError(null);
   };
-
-  const didSubmitModalContent = (
-    <Fragment>
-      <p>Successfully sent the order!</p>
-      <div className={classes.actions}>
-        <button className={classes.button} onClick={didSubmitModalHandler}>
-          Close
-        </button>
-      </div>
-    </Fragment>
-  );
 
   return (
     <Modal onClose={props.onClose}>
@@ -102,11 +93,18 @@ const Cart = props => {
       {ordersCntx.isSubmitting &&
         !ordersCntx.httpError &&
         isSubmittingModalContent}
-      {!ordersCntx.isSubmitting &&
-        ordersCntx.didSubmit &&
-        didSubmitModalContent}
+      {!ordersCntx.isSubmitting && ordersCntx.didSubmit && (
+        <Message
+          message="Order sended sucesfully! 😀"
+          onCloseMessage={didSubmitModalHandler}
+        />
+      )}
       {ordersCntx.httpError && (
-        <p className={classes['error-text']}>{ordersCntx.httpError} 😒</p>
+        <Message
+          message="Something went wrong 😒"
+          onCloseMessage={didSubmitModalHandler}
+          btnMsg={ordersCntx.httpError}
+        />
       )}
     </Modal>
   );
