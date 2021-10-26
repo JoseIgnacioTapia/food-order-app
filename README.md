@@ -6,10 +6,10 @@ The application has a list of meals and you can add the quantities and then requ
 
 
 # Install dependencies
-# `npm install`
+### `npm install`
 
 # Prod server
-# `npm start`
+### `npm start`
 
 # Build for production
-# `npm run build`
+### `npm run build`
